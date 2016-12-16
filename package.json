@@ -1,0 +1,18 @@
+{
+  "name": "typescript-complete-course",
+  "version": "1.0.0",
+  "description": "Learning to use typescript",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "lite-server"
+  },
+  "keywords": [
+    "typescript"
+  ],
+  "author": "David Conner",
+  "license": "ISC",
+  "devDependencies": {
+    "lite-server": "^2.2.2"
+  }
+}

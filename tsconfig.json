@@ -7,8 +7,7 @@
         "strictNullChecks": true,
         "noUnusedParameters": true,
         "alwaysStrict": true,
-        "pretty": true,
-        "watch": true
+        "pretty": true
     },
     "exclude": [
         "node_modules"

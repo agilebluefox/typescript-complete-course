@@ -74,6 +74,9 @@ let complex: { data: number[], output: (all: boolean) => number[] } = {
     data: [100, 3.99, 10],
 
     output: (all: boolean): number[] => {
+        if(!all) {
+            this.data - 2;
+        }
         return this.data;
     }
 }
@@ -85,6 +88,9 @@ let complex2: Complex = {
     data: [100, 3.99, 10],
 
     output: (all: boolean): number[] => {
+        if (all) {
+            this.data + 5;
+        }
         return this.data;
     }
 }

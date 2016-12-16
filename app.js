@@ -1,3 +1,4 @@
+"use strict";
 var _this = this;
 // string
 var who = 'David';
@@ -63,12 +64,18 @@ console.log(userData);
 var complex = {
     data: [100, 3.99, 10],
     output: function (all) {
+        if (!all) {
+            _this.data - 2;
+        }
         return _this.data;
     }
 };
 var complex2 = {
     data: [100, 3.99, 10],
     output: function (all) {
+        if (all) {
+            _this.data + 5;
+        }
         return _this.data;
     }
 };

@@ -1,11 +1,11 @@
 // Exercise 1
-const double = function(value: number): number {
+const double = (value: number): number => {
     return value * 2;
 };
 console.log(double(10));
 
 // Exercise 2
-const greet = function (name: string = 'David'): void {
+const greet = (name: string = 'David'): void => {
     if (name === undefined) { name = "Max"; }
     console.log(`Hello, ${name}`);
 };

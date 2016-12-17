@@ -1,15 +1,20 @@
 {
     "compilerOptions": {
-        "module": "commonjs",
-        "target": "es5",
-        "noImplicitAny": true,
-        "sourceMap": false,
-        "strictNullChecks": true,
-        "noUnusedParameters": true,
-        "alwaysStrict": true,
-        "pretty": true
+        "module": "commonjs", // creates problems when using namespaces and modules in multiple files
+        "target": "es5", // works in all browsers currently
+        "noImplicitAny": true, // prevent any type assignments unless explicit
+        "sourceMap": false, // create source maps for ts files
+        "strictNullChecks": true, // value cannot be null unless explicity set
+        "noUnusedParameters": true, // all params must be used in function body
+        "alwaysStrict": true, // set strict for all compiled js files
+        "pretty": true, // render formatted error messages in tsc
+        "listFiles": true, // prevent compiling all files
+        "outFile": "app.js" // all compiled js gets sent to app.js
     },
     "exclude": [
-        "node_modules"
+        "node_modules" // do not compile files from npm
+    ],
+    "files": [
+        "app.ts" // only compile the app.ts file to prevent clashing in examples
     ]
 }

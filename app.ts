@@ -1,13 +1,27 @@
-// Use modules
-import * as Circle from './geometry_functions/06-circle';
-import calcRect from './geometry_functions/06-rectangle';
+interface PersonInterface {
+    name: string
+}
 
-// Outside of module
-const PI = 2.99;
+// Function to greet a person
+function greet(person: PersonInterface) {
+    console.log(`Hello, ${person.name}!`);
+}
 
-// refer to the exported functions from the modules
-console.log(Circle.getCircumference(8));
-console.log(calcRect(5, 7));
+// object to pass to greet function
+const person = {
+    name: 'David',
+    age: 50
+};
 
-// no clashing with value in circle module
-console.log(PI);
+// Does not match the interface required
+const me = {
+    firstName: 'David',
+    age: 34
+};
+
+// Call greet
+// Object person must have a name property or name will be undefined
+greet(person);
+
+// Error
+// greet(me);

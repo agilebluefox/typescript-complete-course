@@ -32,11 +32,11 @@ let myColor: Color = Color.Blue;
 console.log(`Prints the enum for my color: ${myColor}`);
 
 // any
-let car: any = 'Honda';
-console.log(`Prints the string: ${car}`);
-car = {brand: 'BMW', model: 3};
+let auto: any = 'Honda';
+console.log(`Prints the string: ${auto}`);
+auto = {brand: 'BMW', model: 3};
 console.log(`Now it prints an object:`);
-console.log(car);
+console.log(auto);
 
 // function returns string
 function test(): string {

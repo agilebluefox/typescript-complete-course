@@ -3,7 +3,7 @@ type Account = {
     deposit: (value: number) => void
 };
 
-type Person = {
+type Individual = {
     name: string,
     bankAccount: Account,
     hobbies: string[]
@@ -16,7 +16,7 @@ let bankAccount: Account = {
     }
 };
 
-let myself: Person = {
+let myself: Individual = {
     name: "Max",
     bankAccount: bankAccount,
     hobbies: ["Sports", "Cooking"]

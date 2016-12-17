@@ -7,14 +7,9 @@
         "strictNullChecks": true, // value cannot be null unless explicity set
         "noUnusedParameters": true, // all params must be used in function body
         "alwaysStrict": true, // set strict for all compiled js files
-        "pretty": true, // render formatted error messages in tsc
-        "listFiles": true, // prevent compiling all files
-        "outFile": "app.js" // all compiled js gets sent to app.js
+        "pretty": true // render formatted error messages in tsc
     },
     "exclude": [
         "node_modules" // do not compile files from npm
-    ],
-    "files": [
-        "app.ts" // only compile the app.ts file to prevent clashing in examples
     ]
 }

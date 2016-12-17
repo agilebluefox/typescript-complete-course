@@ -1,15 +1,13 @@
-// Use triple-slash directive to include namespace properties
-// and functions
+// Use modules
+import { getCircumference  } from './geometry_functions/06-circle';
+import { getRectangleArea } from './geometry_functions/06-rectangle';
 
-/// <reference path="06-circle.ts" />
-/// <reference path="06-rectangle.ts" />
-
-// Outside of namespace
+// Outside of module
 const PI = 2.99;
 
-// refer to the exported functions using the namespace
-console.log(Geometry.getCircumference(8));
-console.log(Geometry.getRectangleArea(5, 7));
+// refer to the exported functions from the modules
+console.log(getCircumference(8));
+console.log(getRectangleArea(5, 7));
 
-// no clashing with value in namespace
+// no clashing with value in circle module
 console.log(PI);

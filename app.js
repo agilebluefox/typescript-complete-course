@@ -25,4 +25,18 @@ person.greet('Conner');
 // Make age an optional parameter in the interface to fix errors
 greet({ name: 'Michael', age: 33, hobbies: ['Sleeping', 'Video Games'], greet: function (name) { console.log(name); } });
 // Error - does not fulfill the contract created by the interface
-// greet(me); 
+// greet(me);
+// The class must include all the requirements of the interface
+var NewPerson = (function () {
+    function NewPerson() {
+    }
+    NewPerson.prototype.greet = function (lastName) {
+        console.log("Hey " + lastName + "!");
+    };
+    return NewPerson;
+}());
+var np = new NewPerson();
+np.name = 'Johnny';
+np.lastName = 'Dangerous';
+greet(np);
+np.greet(np.lastName);

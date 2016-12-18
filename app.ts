@@ -40,3 +40,18 @@ greet({name: 'Michael', age: 33, hobbies: ['Sleeping', 'Video Games'], greet(nam
 
 // Error - does not fulfill the contract created by the interface
 // greet(me);
+
+// The class must include all the requirements of the interface
+class NewPerson implements PersonInterface {
+    name: string;
+    lastName: string;
+    greet(lastName: string): void {
+        console.log(`Hey ${lastName}!`);
+    }
+}
+
+const np = new NewPerson();
+np.name = 'Johnny';
+np.lastName = 'Dangerous';
+greet(np);
+np.greet(np.lastName);

@@ -40,3 +40,9 @@ np.name = 'Johnny';
 np.lastName = 'Dangerous';
 greet(np);
 np.greet(np.lastName);
+// Define function using interface
+var doubleIt;
+doubleIt = function (val1, val2) {
+    return (val1 + val2) * 2;
+};
+console.log(doubleIt(9, 3));

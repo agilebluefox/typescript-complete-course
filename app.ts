@@ -55,3 +55,16 @@ np.name = 'Johnny';
 np.lastName = 'Dangerous';
 greet(np);
 np.greet(np.lastName);
+
+// Function interface
+interface DoubleValue {
+    (number1: number, number2: number): number;
+}
+
+// Define function using interface
+let doubleIt: DoubleValue;
+doubleIt = function(val1: number, val2: number) {
+    return (val1 + val2) * 2;
+}
+
+console.log(doubleIt(9,3));

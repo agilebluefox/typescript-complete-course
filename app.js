@@ -46,3 +46,12 @@ doubleIt = function (val1, val2) {
     return (val1 + val2) * 2;
 };
 console.log(doubleIt(9, 3));
+var oldMan = {
+    name: 'Grandpa',
+    age: 1000,
+    greet: function (name) {
+        console.log("Whassup " + name + "?");
+    }
+};
+console.log(oldMan);
+oldMan.greet(oldMan.name);

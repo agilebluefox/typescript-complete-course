@@ -68,3 +68,19 @@ doubleIt = function(val1: number, val2: number) {
 }
 
 console.log(doubleIt(9,3));
+
+// Interfaces can extend other Interfaces
+interface AgedPersonInterface extends PersonInterface {
+    age: number
+}
+
+const oldMan: AgedPersonInterface = {
+    name: 'Grandpa',
+    age: 1000,
+    greet(name: string) {
+        console.log(`Whassup ${name}?`);
+    }
+}
+
+console.log(oldMan);
+oldMan.greet(oldMan.name);

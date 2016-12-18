@@ -1,5 +1,6 @@
 interface PersonInterface {
-    name: string
+    name: string,
+    age?: number
 }
 
 // Function to greet a person
@@ -22,6 +23,10 @@ const me = {
 // Call greet
 // Object person must have a name property or name will be undefined
 greet(person);
+
+// Using an object literal results in stricter checking
+// Make age an optional parameter in the interface to fix errors
+greet({name: 'Michael', age: 33});
 
 // Error
 // greet(me);

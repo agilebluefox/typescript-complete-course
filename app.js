@@ -6,7 +6,8 @@ function greet(person) {
 // object to pass to greet function
 var person = {
     name: 'David',
-    age: 50
+    age: 50,
+    hobbies: ['Tennis', 'Orienteering']
 };
 // Does not match the interface required
 var me = {
@@ -18,6 +19,6 @@ var me = {
 greet(person);
 // Using an object literal results in stricter checking
 // Make age an optional parameter in the interface to fix errors
-greet({ name: 'Michael', age: 33 });
-// Error
+greet({ name: 'Michael', age: 33, hobbies: ['Sleeping', 'Video Games'] });
+// Error - does not fulfill the contract created by the interface
 // greet(me); 

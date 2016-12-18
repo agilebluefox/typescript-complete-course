@@ -4,8 +4,8 @@
 interface PersonInterface {
     name: string,
     age?: number,
-    // add any additional props without errors
-    [unknownProp: string]: any
+    [unknownProp: string]: any, // account for unknown properties
+    greet(lastName: string): void // works with methods too
 }
 
 // Function to greet a person
@@ -17,7 +17,10 @@ function greet(person: PersonInterface) {
 const person = {
     name: 'David',
     age: 50,
-    hobbies: ['Tennis', 'Orienteering']
+    hobbies: ['Tennis', 'Orienteering'],
+    greet(lastName: string) {
+        console.log(`Hey ${lastName}!`);
+    }
 };
 
 // Does not match the interface required
@@ -29,10 +32,11 @@ const me = {
 // Call greet
 // Object person must have a name property or name will be undefined
 greet(person);
+person.greet('Conner');
 
 // Using an object literal results in stricter checking
 // Make age an optional parameter in the interface to fix errors
-greet({name: 'Michael', age: 33, hobbies: ['Sleeping', 'Video Games']});
+greet({name: 'Michael', age: 33, hobbies: ['Sleeping', 'Video Games'], greet(name: string) { console.log(name); }});
 
 // Error - does not fulfill the contract created by the interface
 // greet(me);

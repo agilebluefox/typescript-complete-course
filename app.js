@@ -7,7 +7,10 @@ function greet(person) {
 var person = {
     name: 'David',
     age: 50,
-    hobbies: ['Tennis', 'Orienteering']
+    hobbies: ['Tennis', 'Orienteering'],
+    greet: function (lastName) {
+        console.log("Hey " + lastName + "!");
+    }
 };
 // Does not match the interface required
 var me = {
@@ -17,8 +20,9 @@ var me = {
 // Call greet
 // Object person must have a name property or name will be undefined
 greet(person);
+person.greet('Conner');
 // Using an object literal results in stricter checking
 // Make age an optional parameter in the interface to fix errors
-greet({ name: 'Michael', age: 33, hobbies: ['Sleeping', 'Video Games'] });
+greet({ name: 'Michael', age: 33, hobbies: ['Sleeping', 'Video Games'], greet: function (name) { console.log(name); } });
 // Error - does not fulfill the contract created by the interface
 // greet(me); 

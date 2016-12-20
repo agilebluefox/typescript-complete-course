@@ -1,111 +1,118 @@
-// Simple function to illustrate a generic
-function echo(data: any) {
-    return data;
+// Decorator - function that can be added to a class
+// arguments depend on where you want to attach the decorator
+// To attach a decorator to a class, you pass the constructor parameter
+function logged(constructorFn: Function): void {
+    console.log(constructorFn);
 }
 
-// Use the function with various types
-console.log(echo("David"));
-console.log(echo(45));
-console.log(echo({name: "David", age: 47}));
-
-// What is the problem? No compilation checks, no IDE suggestions
-console.log(echo("David").length); // works, but no ide help
-console.log(echo(45).length); // does not work, but no errors
-console.log(echo({name: "David", age: 47}));
-
-// Typescript Generics
-function betterEcho<T>(data: T) {
-    return data;
-}
-
-// Try again
-console.log(betterEcho("David").length); // adds ide help
-//console.log(betterEcho<number>(45).length); // reports error in ide and compile message
-console.log(betterEcho({name: "David", age: 47}));
-
-// Built-in Generics
-const testResults: Array<number> = [1.94, 4, 6.78];
-testResults.push(2.65);
-// testResults.push('David'); // error
-console.log(testResults);
-
-// Arrays 
-function printAll<T>(args: T[]) {
-    args.forEach((element) => console.log(element));
-}
-printAll<string>(["Apple", "Banana"]);
-
-// Generic Types
-const echo2: <T>(data: T) => T = betterEcho;
-console.log(echo2<string>("Goodbye Cruel World!"));
-
-// Generic Classes - remember T represents the same type, not a mix
-class SimpleMath<T extends number | string> {
-    baseValue: T;
-    multiplyValue: T;
-    calculate(): number {
-        return +this.baseValue * +this.multiplyValue; // cast to number
+// Use the @ symbol to attach the decorator to the class
+@logged
+class Person {
+    constructor() {
+        console.log('Hi there');
     }
 }
 
-const simpleMath = new SimpleMath<string>(); // instance accepts strings
-simpleMath.baseValue = "10";
-simpleMath.multiplyValue = "20";
-console.log(simpleMath.calculate());
+// Factory
+function logging(value: boolean): any {
+    return value ? logged : null;
+}
 
-// Mixing Types - next letter in alphabet
-class SimplerMath<T, U extends number | string> {
-    baseValue: T;
-    multiplyValue: U;
-    calculate(): number {
-        return +this.baseValue * +this.multiplyValue; // cast to number
+// The logging function returns either the logged decorator or nothing
+// Important because only the logged decorator can be attached to a class
+// since it has the constructor parameter
+@logging(true)
+class Car {
+
+}
+
+// Advanced
+function printable(constructorFn: Function) {
+    constructorFn.prototype.print = function() {
+        console.log(this);
     }
 }
 
-const simplerMath = new SimplerMath<string, number>(); 
-simplerMath.baseValue = "10";
-simplerMath.multiplyValue = 20;
-console.log(simplerMath.calculate());
+// Can use multiple decorators
+@logging(true)
+@printable
+class Plant {
+    name = "Green Plant";
+}
+const plant = new Plant();
+// cast to type any due to current bug in typescript
+(<any>plant).print();
 
-//Let's keep it simple and only add the following methods to the Map:
-// The class needs to be of type string or number, but not mixed
-class MyMap<T extends number | string> {
-    // Create a property to store the coordinates
-    // The keys will be strings
-    // The values may be of type string or number consistent with the type of the class
-    private coords: { [key: string]: T } = {};
+// Method decorator
+// Property decorator
 
-    // Same here
-    setItem(key: string, item: T) {
-        this.coords[key] = item;
+// Decide whether or not a method can be overwritten
+function editable(value: boolean) {
+    return function(target: any, propName: string, descriptor: PropertyDescriptor) {
+        descriptor.writable = value;
+    }
+}
+
+// Choose whether a property can be overwritten
+function overwritable(value: boolean) {
+    return function(target: any, propName: any): any {
+        const newDescriptor: PropertyDescriptor = {
+            writable: value
+        };
+        return newDescriptor;
+    }
+}
+
+class Project {
+    // This affects all versions of the property, including the constructor
+    @overwritable(true)
+    projectName: string;
+
+    constructor(name: string) {
+        // If overwritable is false, this causes a runtime error
+        this.projectName = name;
     }
 
-    // The getter needs the key of type string
-    getItem(key: string) {
-        return this.coords[key];
+    // If false, any future attempt to override this method will cause
+    // runtime errors
+    @editable(false)
+    calcBudget() {
+        console.log(1000);
     }
+}
 
-    clear() {
-        this.coords = {};
+const project = new Project('super project');
+project.calcBudget();
+// Causes a runtime error if editable is set to false
+// project.calcBudget = function() {
+//     console.log(2000);
+// };
+project.calcBudget();
+console.log(project.projectName);
+
+// Parameter decorators
+function printInfo(target: any, methodName: string, paramIndex: number) {
+    console.log("Target: ", target);
+    console.log("methodName", methodName);
+    console.log("paramIndex", paramIndex);
+}
+
+class Course {
+    name: string;
+
+    constructor(name: string) {
+        this.name = name;
     }
-
-    printMap() {
-        for(let key in this.coords) {
-            console.log(key, this.coords[key]);
+    // Use the printInfo decorator on the printAll parameter
+    printStudentNumbers(mode: string, @printInfo printAll: boolean) {
+        if (printAll) {
+            console.log(444);
+        } else {
+            console.log(888);
         }
     }
 }
 
-//The map should be usable like shown below:
-// The keys will always be strings
-// If the class is of type number, then all values must be numbers
-const numberMap = new MyMap<number>();
-numberMap.setItem('apples', 5);
-numberMap.setItem('bananas', 10);
-numberMap.printMap();
-
-// If the class is type string, then all values must be strings
-const stringMap = new MyMap<string>();
-stringMap.setItem('name', "Max");
-stringMap.setItem('age', "27");
-stringMap.printMap();
+const course = new Course('Super Course');
+course.printStudentNumbers("anything", true);
+course.printStudentNumbers("anything", false);

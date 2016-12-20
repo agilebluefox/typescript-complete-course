@@ -1,90 +1,131 @@
 "use strict";
-// Simple function to illustrate a generic
-function echo(data) {
-    return data;
+var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
+    var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
+    if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
+    else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
+    return c > 3 && r && Object.defineProperty(target, key, r), r;
+};
+var __param = (this && this.__param) || function (paramIndex, decorator) {
+    return function (target, key) { decorator(target, key, paramIndex); }
+};
+// Decorator - function that can be added to a class
+// arguments depend on where you want to attach the decorator
+// To attach a decorator to a class, you pass the constructor parameter
+function logged(constructorFn) {
+    console.log(constructorFn);
 }
-// Use the function with various types
-console.log(echo("David"));
-console.log(echo(45));
-console.log(echo({ name: "David", age: 47 }));
-// What is the problem? No compilation checks, no IDE suggestions
-console.log(echo("David").length); // works, but no ide help
-console.log(echo(45).length); // does not work, but no errors
-console.log(echo({ name: "David", age: 47 }));
-// Typescript Generics
-function betterEcho(data) {
-    return data;
-}
-// Try again
-console.log(betterEcho("David").length); // adds ide help
-//console.log(betterEcho<number>(45).length); // reports error in ide and compile message
-console.log(betterEcho({ name: "David", age: 47 }));
-// Built-in Generics
-var testResults = [1.94, 4, 6.78];
-testResults.push(2.65);
-// testResults.push('David'); // error
-console.log(testResults);
-// Arrays 
-function printAll(args) {
-    args.forEach(function (element) { return console.log(element); });
-}
-printAll(["Apple", "Banana"]);
-// Generic Types
-var echo2 = betterEcho;
-console.log(echo2("Goodbye Cruel World!"));
-// Generic Classes - remember T represents the same type, not a mix
-var SimpleMath = (function () {
-    function SimpleMath() {
+// Use the @ symbol to attach the decorator to the class
+var Person = (function () {
+    function Person() {
+        console.log('Hi there');
     }
-    SimpleMath.prototype.calculate = function () {
-        return +this.baseValue * +this.multiplyValue; // cast to number
-    };
-    return SimpleMath;
+    return Person;
 }());
-var simpleMath = new SimpleMath(); // instance accepts strings
-simpleMath.baseValue = "10";
-simpleMath.multiplyValue = "20";
-console.log(simpleMath.calculate());
-// Mixing Types - next letter in alphabet
-var SimplerMath = (function () {
-    function SimplerMath() {
+Person = __decorate([
+    logged
+], Person);
+// Factory
+function logging(value) {
+    return value ? logged : null;
+}
+// The logging function returns either the logged decorator or nothing
+// Important because only the logged decorator can be attached to a class
+// since it has the constructor parameter
+var Car = (function () {
+    function Car() {
     }
-    SimplerMath.prototype.calculate = function () {
-        return +this.baseValue * +this.multiplyValue; // cast to number
-    };
-    return SimplerMath;
+    return Car;
 }());
-var simplerMath = new SimplerMath();
-simplerMath.baseValue = "10";
-simplerMath.multiplyValue = 20;
-console.log(simplerMath.calculate());
-//Let's keep it simple and only add the following methods to the Map:
-var MyMap = (function () {
-    function MyMap() {
-        this.coords = {};
+Car = __decorate([
+    logging(true)
+], Car);
+// Advanced
+function printable(constructorFn) {
+    constructorFn.prototype.print = function () {
+        console.log(this);
+    };
+}
+// Can use multiple decorators
+var Plant = (function () {
+    function Plant() {
+        this.name = "Green Plant";
     }
-    MyMap.prototype.setItem = function (key, item) {
-        this.coords[key] = item;
+    return Plant;
+}());
+Plant = __decorate([
+    logging(true),
+    printable
+], Plant);
+var plant = new Plant();
+// cast to type any due to current bug in typescript
+plant.print();
+// Method decorator
+// Property decorator
+// Decide whether or not a method can be overwritten
+function editable(value) {
+    return function (target, propName, descriptor) {
+        descriptor.writable = value;
     };
-    MyMap.prototype.getItem = function (key) {
-        return this.coords[key];
+}
+// Choose whether a property can be overwritten
+function overwritable(value) {
+    return function (target, propName) {
+        var newDescriptor = {
+            writable: value
+        };
+        return newDescriptor;
     };
-    MyMap.prototype.clear = function () {
-        this.coords = {};
+}
+var Project = (function () {
+    function Project(name) {
+        // If overwritable is false, this causes a runtime error
+        this.projectName = name;
+    }
+    // If false, any future attempt to override this method will cause
+    // runtime errors
+    Project.prototype.calcBudget = function () {
+        console.log(1000);
     };
-    MyMap.prototype.printMap = function () {
-        for (var key in this.coords) {
-            console.log(key, this.coords[key]);
+    return Project;
+}());
+__decorate([
+    overwritable(true)
+], Project.prototype, "projectName", void 0);
+__decorate([
+    editable(false)
+], Project.prototype, "calcBudget", null);
+var project = new Project('super project');
+project.calcBudget();
+// Causes a runtime error if editable is set to false
+// project.calcBudget = function() {
+//     console.log(2000);
+// };
+project.calcBudget();
+console.log(project.projectName);
+// Parameter decorators
+function printInfo(target, methodName, paramIndex) {
+    console.log("Target: ", target);
+    console.log("methodName", methodName);
+    console.log("paramIndex", paramIndex);
+}
+var Course = (function () {
+    function Course(name) {
+        this.name = name;
+    }
+    // Use the printInfo decorator on the printAll parameter
+    Course.prototype.printStudentNumbers = function (mode, printAll) {
+        if (printAll) {
+            console.log(444);
+        }
+        else {
+            console.log(888);
         }
     };
-    return MyMap;
+    return Course;
 }());
-//The map should be usable like shown below:
-var numberMap = new MyMap();
-numberMap.setItem('apples', 5);
-numberMap.setItem('bananas', 10);
-numberMap.printMap();
-var stringMap = new MyMap();
-stringMap.setItem('name', "Max");
-stringMap.setItem('age', "27");
-stringMap.printMap();
+__decorate([
+    __param(1, printInfo)
+], Course.prototype, "printStudentNumbers", null);
+var course = new Course('Super Course');
+course.printStudentNumbers("anything", true);
+course.printStudentNumbers("anything", false);

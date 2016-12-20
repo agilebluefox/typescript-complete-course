@@ -1,57 +1,90 @@
 "use strict";
-// Function to greet a person
-function greet(person) {
-    console.log("Hello, " + person.name + "!");
+// Simple function to illustrate a generic
+function echo(data) {
+    return data;
 }
-// object to pass to greet function
-var person = {
-    name: 'David',
-    age: 50,
-    hobbies: ['Tennis', 'Orienteering'],
-    greet: function (lastName) {
-        console.log("Hey " + lastName + "!");
+// Use the function with various types
+console.log(echo("David"));
+console.log(echo(45));
+console.log(echo({ name: "David", age: 47 }));
+// What is the problem? No compilation checks, no IDE suggestions
+console.log(echo("David").length); // works, but no ide help
+console.log(echo(45).length); // does not work, but no errors
+console.log(echo({ name: "David", age: 47 }));
+// Typescript Generics
+function betterEcho(data) {
+    return data;
+}
+// Try again
+console.log(betterEcho("David").length); // adds ide help
+//console.log(betterEcho<number>(45).length); // reports error in ide and compile message
+console.log(betterEcho({ name: "David", age: 47 }));
+// Built-in Generics
+var testResults = [1.94, 4, 6.78];
+testResults.push(2.65);
+// testResults.push('David'); // error
+console.log(testResults);
+// Arrays 
+function printAll(args) {
+    args.forEach(function (element) { return console.log(element); });
+}
+printAll(["Apple", "Banana"]);
+// Generic Types
+var echo2 = betterEcho;
+console.log(echo2("Goodbye Cruel World!"));
+// Generic Classes - remember T represents the same type, not a mix
+var SimpleMath = (function () {
+    function SimpleMath() {
     }
-};
-// Does not match the interface required
-var me = {
-    firstName: 'David',
-    age: 34
-};
-// Call greet
-// Object person must have a name property or name will be undefined
-greet(person);
-person.greet('Conner');
-// Using an object literal results in stricter checking
-// Make age an optional parameter in the interface to fix errors
-greet({ name: 'Michael', age: 33, hobbies: ['Sleeping', 'Video Games'], greet: function (name) { console.log(name); } });
-// Error - does not fulfill the contract created by the interface
-// greet(me);
-// The class must include all the requirements of the interface
-var NewPerson = (function () {
-    function NewPerson() {
-    }
-    NewPerson.prototype.greet = function (lastName) {
-        console.log("Hey " + lastName + "!");
+    SimpleMath.prototype.calculate = function () {
+        return +this.baseValue * +this.multiplyValue; // cast to number
     };
-    return NewPerson;
+    return SimpleMath;
 }());
-var np = new NewPerson();
-np.name = 'Johnny';
-np.lastName = 'Dangerous';
-greet(np);
-np.greet(np.lastName);
-// Define function using interface
-var doubleIt;
-doubleIt = function (val1, val2) {
-    return (val1 + val2) * 2;
-};
-console.log(doubleIt(9, 3));
-var oldMan = {
-    name: 'Grandpa',
-    age: 1000,
-    greet: function (name) {
-        console.log("Whassup " + name + "?");
+var simpleMath = new SimpleMath(); // instance accepts strings
+simpleMath.baseValue = "10";
+simpleMath.multiplyValue = "20";
+console.log(simpleMath.calculate());
+// Mixing Types - next letter in alphabet
+var SimplerMath = (function () {
+    function SimplerMath() {
     }
-};
-console.log(oldMan);
-oldMan.greet(oldMan.name);
+    SimplerMath.prototype.calculate = function () {
+        return +this.baseValue * +this.multiplyValue; // cast to number
+    };
+    return SimplerMath;
+}());
+var simplerMath = new SimplerMath();
+simplerMath.baseValue = "10";
+simplerMath.multiplyValue = 20;
+console.log(simplerMath.calculate());
+//Let's keep it simple and only add the following methods to the Map:
+var MyMap = (function () {
+    function MyMap() {
+        this.coords = {};
+    }
+    MyMap.prototype.setItem = function (key, item) {
+        this.coords[key] = item;
+    };
+    MyMap.prototype.getItem = function (key) {
+        return this.coords[key];
+    };
+    MyMap.prototype.clear = function () {
+        this.coords = {};
+    };
+    MyMap.prototype.printMap = function () {
+        for (var key in this.coords) {
+            console.log(key, this.coords[key]);
+        }
+    };
+    return MyMap;
+}());
+//The map should be usable like shown below:
+var numberMap = new MyMap();
+numberMap.setItem('apples', 5);
+numberMap.setItem('bananas', 10);
+numberMap.printMap();
+var stringMap = new MyMap();
+stringMap.setItem('name', "Max");
+stringMap.setItem('age', "27");
+stringMap.printMap();

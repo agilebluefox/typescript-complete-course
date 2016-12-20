@@ -13,9 +13,11 @@
   "author": "David Conner",
   "license": "ISC",
   "devDependencies": {
+    "@types/jquery": "^2.0.34",
     "lite-server": "^2.2.2"
   },
   "dependencies": {
+    "jquery": "^3.1.1",
     "systemjs": "^0.19.41"
   }
 }

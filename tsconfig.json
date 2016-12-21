@@ -1,16 +1,10 @@
 {
     "compilerOptions": {
-        "module": "commonjs", // creates problems when using namespaces and modules in multiple files
         "target": "es5", // works in all browsers currently
         "noImplicitAny": true, // prevent any type assignments unless explicit
-        "sourceMap": false, // create source maps for ts files
         "strictNullChecks": true, // value cannot be null unless explicity set
         "noUnusedParameters": false, // all params must be used in function body
         "alwaysStrict": true, // set strict for all compiled js files
-        "pretty": true, // render formatted error messages in tsc
-        "experimentalDecorators": true
-    },
-    "exclude": [
-        "node_modules" // do not compile files from npm
-    ]
+        "pretty": true // render formatted error messages in tsc
+    }
 }
